@@ -1,0 +1,355 @@
+:root {
+  --background-color-1: #464d55;
+  --background-color-2: #25292e;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0px;
+}
+
+body {
+  background-color: var(--background-color-1);
+  margin: 0px;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent body from resizing */
+  
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+  }
+
+  main {
+    background-color: #fff;
+    padding: 30px;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    flex-grow: 0;
+    
+    .table-container {
+      background-color: #9c4848;
+      padding: 20px;
+      display: grid;
+      grid-auto-flow: row;
+      row-gap: 5px;
+      height: 100%;
+
+      .top {
+        max-width: 100%;
+        justify-content: center;
+        align-items: center;
+
+        .other-players-container {
+          max-height: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+          gap: 5px;
+
+          .player-container {
+            max-width: 25%;
+            min-width: min-content;
+
+            .other-player-card {
+              position: relative;
+              flex-shrink: 20;
+            }
+          }
+        }
+      }
+
+      .bottom {
+        display: flex;
+        flex-direction: row;
+        max-width: 100%;
+        justify-content: space-around;
+        align-items: center;
+
+        .this-player-container {
+          max-height: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          max-width: 60%;
+          gap: 5px;
+
+          .player-container {
+            max-height: 100%;
+            min-width: min-content;
+
+            .this-player-card {
+              position: relative;  
+              cursor: pointer;
+              transition: transform 0.3s ease;
+              flex-shrink: 10;
+            }
+  
+            /* Hover effect: slightly enlarge the card */
+            .this-player-card:hover {
+              transform: scale(1.3);
+              z-index: 1;
+            }
+            
+            /* Display the alt text on focus */
+            .this-player-card::after {
+              content: attr(data-alt); /* Get the alt text from the data-alt attribute */
+              position: absolute;
+              top: 50%; /* Position text below the image */
+              left: 50%;
+              transform: translateX(-50%); /* Center the alt text */
+              background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+              color: white;
+              padding: 5px;
+              border-radius: 4px;
+              white-space: nowrap; /* Prevent text wrapping */
+              font-size: 2em;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+            }
+  
+            /* Hidden by default */
+            .this-player-card:hover::after {
+              opacity: 1;
+            }
+  
+            /* Transition on click: rotate the card */
+            .this-player-card:active {
+              transform: scale(2.5) rotate(-5deg);
+            }
+          }
+        }
+        
+        .deck-container {
+          .deck-count {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+          }
+
+          /* Hover effect: slightly enlarge the card */
+          .deck-count:hover {
+            transform: scale(1.3);
+            z-index: 1;
+          }
+          
+          /* Display the alt text on focus */
+          .deck-count::after {
+            content: attr(data-alt); /* Get the alt text from the data-alt attribute */
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translateX(-50%); /* Center the alt text */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 2em;
+            opacity: 1;
+            transition: transform 0.3s ease;
+          }
+
+          /* Transition on click: rotate the card */
+          .deck-count:active {
+            transform: scale(1.5) rotate(5deg) translateX(-25vw);
+            transition: transform 0.1s ease;
+          }
+
+          .card-img {
+            max-height: 150px;
+            max-width: 100%;
+            border: 1px solid white;
+          }
+        }
+      }
+
+      .player-container {
+        display: grid;
+        padding: 20px;
+        border-radius: 5px;
+        border-color: black;
+        border-style: ridge;
+
+        .player-data {
+          display: flex;
+          margin: 5px;
+          padding: 10px;
+          max-width: fit-content;
+
+          .name {
+            font-size: 2em;
+            padding: 10px;
+          }
+
+          .status {
+            display: flex;
+
+            justify-content: space-evenly;
+            padding: 10px;
+
+            .icon-img {
+              height: 2em;
+              width: auto;
+            }
+          }
+
+          .sanity {
+            font-size: 2em;
+            padding: 10px;
+          }
+        }
+
+        .player-cards {
+          display: grid;
+          grid-template-columns: 1fr;
+
+          .hand {
+            position: relative;
+            max-width: 100%;
+            min-width: 100%;
+            display: flex;
+          }
+
+          .altar {
+            position: relative;
+            max-width: 100%;
+            min-width: 100%;
+            display: flex;
+          }
+
+          .card-img {
+            max-height: 100px;
+            max-width: 100%;
+            border: 1px solid white;
+          }
+        }
+      }
+    }
+  }
+
+  .menu-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  
+    #playGame {
+      align-items: center;
+      background-color: initial;
+      background-image: linear-gradient(var(--background-color-1), var(--background-color-2));
+      border-radius: 8px;
+      border-width: 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+      box-sizing: border-box;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      font-family: expo-brand-demi,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+      font-size: 18px;
+      height: 52px;
+      justify-content: center;
+      line-height: 1;
+      margin: 0;
+      outline: none;
+      overflow: hidden;
+      padding: 0 32px;
+      text-align: center;
+      text-decoration: none;
+      transform: translate3d(0, 0, 0);
+      transition: all 150ms;
+      vertical-align: baseline;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    
+    #playGame:hover {
+      box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+      opacity: .85;
+    }
+    
+    #playGame:active {
+      outline: 0;
+    }
+    
+    #playGame:focus {
+      box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+    }
+    
+    @media (max-width: 420px) {
+      #playGame {
+        height: 48px;
+      }
+    }
+    
+    #nextTurn {
+      align-items: center;
+      background-color: initial;
+      background-image: linear-gradient(var(--background-color-1), var(--background-color-2));
+      border-radius: 8px;
+      border-width: 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+      box-sizing: border-box;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      font-family: expo-brand-demi,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+      font-size: 18px;
+      height: 52px;
+      justify-content: center;
+      line-height: 1;
+      margin: 0;
+      outline: none;
+      overflow: hidden;
+      padding: 0 32px;
+      text-align: center;
+      text-decoration: none;
+      transform: translate3d(0, 0, 0);
+      transition: all 150ms;
+      vertical-align: baseline;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    
+    #nextTurn:hover {
+      box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+      opacity: .85;
+    }
+    
+    #nextTurn:active {
+      outline: 0;
+    }
+    
+    #nextTurn:focus {
+      box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+    }
+    
+    @media (max-width: 420px) {
+      #nextTurn {
+        height: 48px;
+      }
+    }
+  }
+}

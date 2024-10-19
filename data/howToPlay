@@ -1,0 +1,37 @@
+Haunted Tarot Card Game
+Summary
+The game is simple: reduce other players’ sanity to 0 and get them killed during a Cursed Hunt.
+
+Set Up
+Each player starts with 5 cards and 100 sanity. Shuffle event cards back into the deck and draw new cards if needed.
+
+Gameplay
+Start your turn by drawing a card.
+If it is an event card, reveal it to everyone and have it take effect immediately. Draw another card after.
+Play one card option:
+
+    ◦    Face up on another player. It takes effect immediately, but may be stopped by another player playing The Fool.
+    ◦    Face up on yourself. It takes effect immediately, but may be stopped by another player playing The Fool.
+    ◦    Face down (banked in your Altar) on yourself. It can be played on any other players turn. It can also be played on your turn, and does not count as part of your turn. It cannot be stopped by another player playing The Fool.
+
+Continue until only one player survives. If the deck runs out, either the player with the highest sanity wins or optionally the players can shuffle the discard pile and keep going.
+
+100 Cards
+Sanity cards - Can be played or banked on your turn:
+    5 Sun : +50 sanity to a selected player
+    5 Moon : -50 sanity to a selected player
+    20 The Tower : -10 sanity to all players
+    10 The Wheel of Fortune Green : +20 sanity to a selected player
+    10 The Wheel of Fortune Red : -20 sanity to a selected player
+
+Utility cards - Can be played on your turn:
+    10 The Hermit : Player gains a status where they cannot be targeted or die from a hunt until after their next turn.
+    10 The Devil : Choose a player and randomly steal a banked card or a card from their hand.
+
+Negation cards - Can be played on another player’s turn: 
+    17 The Fool : Cancels out a played card. Cannot be used on banked cards.
+
+Event cards - Immediately take effect:
+    2 The High Priestess : Grant a status when, upon dying from a cursed hunt, return to 100 sanity.
+    1 The Hanged Man : The player that draws this card drops to 0 sanity. They discard their entire hand and altar, lose all status effects, and draw another card.
+    10 Death : (Cursed Hunt) If any players are at 0 sanity, they die.
