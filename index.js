@@ -42,10 +42,7 @@ class Player {
 
         const card = deck.pop();
 
-        populateDeck();
-
-
-        logEventMessage(`Player ${this.name} drew ${card.name}`);
+        logEventMessage(`${this.name} drew ${card.name}`);
     
         // if card type == event
         if (card.type == CardType.EVENT) {
@@ -184,7 +181,7 @@ class Player {
             }
         }
 
-        updateUI();
+        displayUI();
     }
             
     // choose card (sanity) from altar
@@ -237,7 +234,7 @@ class Player {
             }
         }
 
-        updateUI();
+        displayUI();
     }
 
     // if tower, for all player where isAlive = true and isImmune == false
@@ -280,30 +277,36 @@ class Player {
         }
 
         logEventMessage(`${otherPlayer.name}'s sanity level is now ${otherPlayer.sanity}`);
-        updateUI();
+        displayUI();
     }
     
     // Timer to wait for card draw
     waitForCardDraw() {
         return new Promise((resolve, reject) => {
-            const deckContainer = document.querySelector('.deck-container');
-
+            const deckButton = document.getElementById('deckButton');
+        
             logEventMessage(`${this.name} is drawing a card...`);
 
             // Set up the timeout
             const timer = setTimeout(() => {
+                logEventMessage(`${this.name} drew a card automatically`);
+                deckButton.removeEventListener('mousedown', onClick); // Clean up event listener
                 resolve();
-                deckContainer.removeEventListener('click', onClick); // Clean up event listener
             }, drawTimeout);
             
             // Set up the click event listener
             function onClick(event) {
                 clearTimeout(timer); // Cancel the timeout if the user clicks
-                resolve(); // Resolve when the element is clicked
-                deckContainer.removeEventListener('click', onClick); // Clean up event listener
+                logEventMessage(`${this.name} drew a card from the deck`);
+
+                setTimeout(() => {
+                    deckButton.removeEventListener('mousedown', onClick); // Clean up event listener
+                    resolve();                    
+                }, 1000);
             }
 
-            deckContainer.addEventListener('click', onClick);
+            deckButton.removeAttribute('disabled');
+            deckButton.addEventListener('mousedown', onClick);
         });
     }
 
@@ -548,7 +551,7 @@ function dealCards() {
 
 function startGame() {
     turnCount = 0;
-    updateUI();
+    displayUI();
 
     //nextTurn();
 }
@@ -556,16 +559,16 @@ function startGame() {
 async function nextTurn() {
     turnCount = (turnCount + 1) % players.length;
 
-    updateUI();
+    displayUI();
 
     if (!gameOver()) {
         const player = getCurrentPlayer();
         
         // if isAlive, player does their turn
         if (player.isAlive == true) {
-            player.drawCard();
+            await player.drawCard();
 
-            updateUI();
+            displayUI();
 
             // if isAlive after card draw
             if (player.isAlive == true) {
@@ -594,7 +597,7 @@ function getCurrentPlayer() {
 
 
 function handleGameResult() {
-    updateUI();
+    displayUI();
 
     logEventMessage("The Dead");
     players.filter((player) => player.isAlive == false)
@@ -631,14 +634,14 @@ function loadGamePage() {
     nextTurnButtonElem.addEventListener('click', () => nextTurn());
 }
 
-function updateUI() {
-    populatePlayersData();
-    populateDeck();
-    populateEventMessages();
+function displayUI() {
+    displayPlayersData();
+    displayDeck();
+    displayEventMessages();
 }
 
 // Function to populate the HTML with player data
-function populatePlayersData() {
+function displayPlayersData() {
     const otherPlayersContainer = document.querySelector('.other-players-container');
     const thisPlayerContainer = document.querySelector('.this-player-container');
 
@@ -802,24 +805,23 @@ function createImgElement(imgClass, imagePath, name) {
 }
 
 // Function to populate the HTML with deck data
-function populateDeck() {
+function displayDeck() {
     const deckContainer = document.querySelector('.deck-container');
 
     deckContainer.innerHTML = '';
 
-    const deckElement = document.createElement('div');
-    deckElement.classList.add('deck-count');
-    deckElement.dataset.alt = deck.length;
+    const deckButton = document.createElement('button');
+    deckButton.classList.add('deck-button');
+    deckButton.id = "deckButton"
+    deckButton.textContent = deck.length;
+    //deckButton.disabled = true;
 
-    if (deck.length >= 0) {
-        const imgElement = createImgElement('card-img', cardBackImgPath, "back");
-        deckElement.appendChild(imgElement);
-    }
+    deckButton.style.background = `url(${cardBackImgPath})`;
 
-    deckContainer.appendChild(deckElement);
+    deckContainer.appendChild(deckButton);
 }
 
-function populateEventMessages() {
+function displayEventMessages() {
     
 }
 
@@ -838,7 +840,7 @@ let players = [];
 let deck = [];
 let turnCount = 0;
 let selectTimeout = 5000; // 1000 = 1 second
-let drawTimeout = 3000; // 1000 = 1 second
+let drawTimeout = 5000; // 1000 = 1 second
 let timeInterval = 100; // checking every 0.1 second
 
 loadHomePage();
